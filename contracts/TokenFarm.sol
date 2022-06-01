@@ -137,8 +137,6 @@ contract TokenFarm is Ownable {
         IERC20(_token).transfer(address(this), balance);
         stakingBalance[_token][msg.sender] = 0;
         uniqueTokenStaked[msg.sender]--;
-
-        
     }
 
     function updateUniqueTokensStaked(address _user, address _token) internal {
