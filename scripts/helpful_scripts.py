@@ -10,7 +10,6 @@ from brownie import (
     web3,
 )
 
-INITIAL_PRICE_FEED_VALUE = 2**10
 NON_FORKED_LOCAL_BLOCKCHAIN_ENVIRONMENTS = ["hardhat", "development", "ganache"]
 LOCAL_BLOCKCHAIN_ENVIRONMENTS = NON_FORKED_LOCAL_BLOCKCHAIN_ENVIRONMENTS + [
     "mainnet-fork",
@@ -31,7 +30,7 @@ contract_to_mock = {
 }
 
 DECIMALS = 18
-INITIAL_VALUE = web3.toWei(2000, "ether")
+INITIAL_PRICE_FEED_VALUE = web3.toWei(2000, "ether")
 BASE_FEE = 100000000000000000  # The premium
 GAS_PRICE_LINK = 1e9  # Some value calculated depending on the Layer 1 cost and Link
 
@@ -103,7 +102,7 @@ def fund_with_link(
     return tx
 
 
-def deploy_mocks(decimals=18, initial_value=200):
+def deploy_mocks(decimals=18, INITIAL_PRICE_FEED_VALUE=INITIAL_PRICE_FEED_VALUE):
     """
     Use this script if you want to deploy mocks to a testnet
     """
@@ -114,7 +113,7 @@ def deploy_mocks(decimals=18, initial_value=200):
     link_token = LinkToken.deploy({"from": account})
     print("Deploying Mock Price Feed...")
     mock_price_feed = MockV3Aggregator.deploy(
-        decimals, initial_value, {"from": account}
+        decimals, INITIAL_PRICE_FEED_VALUE, {"from": account}
     )
     print(f"Deployed to {mock_price_feed.address}")
     print("Deploying Mock DAI...")
@@ -123,7 +122,6 @@ def deploy_mocks(decimals=18, initial_value=200):
     print("Deploying Mock WETH")
     weth_token = MockWETH.deploy({"from": account})
     print(f"Deployed to {weth_token.address}")
-    
 
 
 def listen_for_event(brownie_contract, event, timeout=200, poll_interval=2):

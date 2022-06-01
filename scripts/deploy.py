@@ -19,7 +19,7 @@ def add_allowed_tokens(tokenFarm, dictOfAllowedTokens, account):
     return tokenFarm
 
 
-def deployTokenFarm_and_deploydapp_token():
+def deploy_token_farm_and_dapp_token():
     account = get_account()
     dapp_token = DappToken.deploy({"from": account})
     tokenFarm = TokenFarm.deploy(
@@ -54,4 +54,4 @@ def deployTokenFarm_and_deploydapp_token():
 
 
 def main():
-    deployTokenFarm_and_deploydapp_token()
+    deploy_token_farm_and_dapp_token()

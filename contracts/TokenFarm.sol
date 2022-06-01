@@ -112,7 +112,10 @@ contract TokenFarm is Ownable {
         return (uint256(price), decimals);
     }
 
-    function stakeTokens(uint256 _amount, address _token) public {
+    function stakeTokens(uint256 _amount, address _token)
+        public
+        returns (uint256)
+    {
         // what token to stake
         // how much ?
         require(_amount > 0, "Amount must be greater than 0");
@@ -129,14 +132,16 @@ contract TokenFarm is Ownable {
         if (uniqueTokenStaked[msg.sender] == 1) {
             stakers.push(msg.sender);
         }
+        return stakingBalance[_token][msg.sender];
     }
 
-    function unstakeTokens(address _token) public {
+    function unstakeTokens(address _token) public returns (uint256) {
         uint256 balance = stakingBalance[_token][msg.sender];
         require(balance > 0, "Balance must be greater than 0");
-        IERC20(_token).transfer(address(this), balance);
+        IERC20(_token).transfer(msg.sender, balance);
         stakingBalance[_token][msg.sender] = 0;
         uniqueTokenStaked[msg.sender]--;
+        return balance;
     }
 
     function updateUniqueTokensStaked(address _user, address _token) internal {
