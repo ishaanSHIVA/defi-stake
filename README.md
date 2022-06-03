@@ -13,7 +13,7 @@ git,eth-brownie,node,python,metamask,react,yarn
 
 you should have a some amt of kovan test network(only supported)
 
-<!-- you can get kovan eth from https://faucets.chain.link/ -->
+you can get kovan eth from https://faucets.chain.link/
 
  commands to deploy and see the working yourself
  
