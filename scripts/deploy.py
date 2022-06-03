@@ -2,6 +2,10 @@ from audioop import add
 from scripts.helpful_scripts import get_account, get_contract
 from brownie import DappToken, TokenFarm, network, config
 from web3 import Web3
+import json
+import yaml
+import shutil
+import os
 
 
 KEPT_BALANCE = Web3.toWei(100, "ether")
@@ -19,7 +23,7 @@ def add_allowed_tokens(tokenFarm, dictOfAllowedTokens, account):
     return tokenFarm
 
 
-def deploy_token_farm_and_dapp_token():
+def deploy_token_farm_and_dapp_token(updateFrontEnd=False):
     account = get_account()
     dapp_token = DappToken.deploy({"from": account})
     tokenFarm = TokenFarm.deploy(
@@ -49,9 +53,32 @@ def deploy_token_farm_and_dapp_token():
         fau_token: get_contract("dai_usd_price_feed"),
     }
 
+    if updateFrontEnd:
+        update_front_end()
+
     add_allowed_tokens(tokenFarm, dictOfAllowedTokens, account)
     return tokenFarm, dapp_token
 
 
+def copy_folders_to_front_end(src, destination):
+    if os.path.exists(destination):
+        shutil.rmtree(destination)
+    shutil.copytree(src, destination)
+
+
+def update_front_end():
+
+    # send build folder to front end
+
+    copy_folders_to_front_end("build", "front_end/src/chain-info")
+
+    # sending brownie config in json to front end
+    with open("brownie-config.yaml", "r") as file:
+        config_dict = yaml.load(file, Loader=yaml.FullLoader)
+        with open("front_end/src/brownie-config.json", "w") as brownieConfigJson:
+            json.dump(config_dict, brownieConfigJson)
+        print(f"Front end updated")
+
+
 def main():
-    deploy_token_farm_and_dapp_token()
+    deploy_token_farm_and_dapp_token(True)

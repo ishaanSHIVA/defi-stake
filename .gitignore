@@ -4,3 +4,5 @@ __pycache__
 .hypothesis/
 build/
 reports/
+front_end/node_modules/
+front_end/src/chain-info
