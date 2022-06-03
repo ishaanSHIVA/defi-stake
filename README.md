@@ -17,6 +17,7 @@ you can get kovan eth from https://faucets.chain.link/
 
  commands to deploy and see the working yourself
  
+ ```
 git commit https://github.com/ishaanSHIVA/defi-stake/
 cd defi-stake
 brownie compile
@@ -24,3 +25,4 @@ brownie run scripts/deploy.py --n kovan
 cd front_end
 yarn
 yarn start
+```
